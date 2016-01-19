@@ -1,0 +1,46 @@
+{
+    "name":        "arcanedev/socialite",
+    "description": "Laravel wrapper around OAuth 1 & OAuth 2 libraries.",
+    "keywords":    ["arcanedev", "laravel", "oauth", "facebook", "twitter", "google", "github", "bitbucket", "linked-in"],
+    "homepage":    "https://github.com/ARCANEDEV/Socialite",
+    "authors": [
+        {
+            "name":     "ARCANEDEV",
+            "email":    "arcanedev.maroc@gmail.com",
+            "homepage": "https://github.com/arcanedev-maroc",
+            "role":     "Developer"
+        }
+    ],
+    "type":    "library",
+    "license": "MIT",
+    "require": {
+        "php":                  ">=5.5.9",
+        "psr/log":              "~1.0",
+        "arcanedev/support":    "~3.0",
+        "guzzlehttp/guzzle":    "~5.0|~6.0",
+        "league/oauth1-client": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpcov":       "~2.0",
+        "phpunit/phpunit":      "~4.0|~5.0",
+        "orchestra/testbench":  "~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Arcanedev\\Socialite\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Arcanedev\\Socialite\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "testbench": "composer require --dev \"orchestra/testbench=~3.0\""
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
