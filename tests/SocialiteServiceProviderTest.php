@@ -58,7 +58,7 @@ class SocialiteServiceProviderTest extends TestCase
     public function it_can_provides()
     {
         $expected = [
-            //
+            \Arcanedev\Socialite\Contracts\Factory::class
         ];
 
         $this->assertEquals($expected, $this->provider->provides());
