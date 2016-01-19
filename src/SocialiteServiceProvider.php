@@ -48,12 +48,12 @@ class SocialiteServiceProvider extends ServiceProvider
      */
     /**
      * Register the service provider.
-     *
-     * @return void
      */
     public function register()
     {
-        //
+        $this->singleton(\Arcanedev\Socialite\Contracts\Factory::class, function ($app) {
+            return new SocialiteManager($app);
+        });
     }
 
     /**
@@ -64,7 +64,7 @@ class SocialiteServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            //
+            \Arcanedev\Socialite\Contracts\Factory::class,
         ];
     }
 }
