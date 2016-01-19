@@ -4,7 +4,7 @@
 [![HHVM Status][badge_hhvm]](http://hhvm.h4cc.de/package/arcanedev/socialite)
 [![Coverage Status][badge_coverage]](https://scrutinizer-ci.com/g/ARCANEDEV/Socialite/?branch=master)
 [![Scrutinizer Code Quality][badge_quality]](https://scrutinizer-ci.com/g/ARCANEDEV/Socialite/?branch=master)
-[![SensioLabs Insight][badge_insight]](https://insight.sensiolabs.com/projects/[id])
+[![SensioLabs Insight][badge_insight]](https://insight.sensiolabs.com/projects/fc22246f-022e-459e-8cd6-64aa8ab6d811)
 [![Github Issues][badge_issues]](https://github.com/ARCANEDEV/Socialite/issues)
 
 [![Packagist][badge_package]](https://packagist.org/packages/arcanedev/socialite)
@@ -18,7 +18,7 @@
 [badge_hhvm]:      https://img.shields.io/hhvm/arcanedev/socialite.svg?style=flat-square
 [badge_coverage]:  https://img.shields.io/scrutinizer/coverage/g/ARCANEDEV/Socialite.svg?style=flat-square
 [badge_quality]:   https://img.shields.io/scrutinizer/g/ARCANEDEV/Socialite.svg?style=flat-square
-[badge_insight]:   https://img.shields.io/sensiolabs/i/[id].svg?style=flat-square
+[badge_insight]:   https://img.shields.io/sensiolabs/i/fc22246f-022e-459e-8cd6-64aa8ab6d811.svg?style=flat-square
 [badge_issues]:    https://img.shields.io/github/issues/ARCANEDEV/Socialite.svg?style=flat-square
 
 [badge_package]:   https://img.shields.io/badge/package-arcanedev/socialite-blue.svg?style=flat-square
@@ -34,6 +34,30 @@ Socialite provides an expressive, fluent interface to OAuth authentication with 
 Official documentation for Socialite can be found at the [_docs folder](_docs/0.Home.md).
 
 Feel free to check out the [releases](https://github.com/ARCANEDEV/Socialite/releases), [license](LICENSE.md), and [contribution guidelines](CONTRIBUTING.md).
+
+## OAuth v2
+
+ - [ ] Dailymotion
+ - [ ] Disqus
+ - [ ] Facebook
+ - [ ] Google
+ - [ ] Github
+ - [ ] Instagram
+ - [ ] LinkedIn
+ - [ ] PayPal
+ - [ ] Reddit
+ - [ ] SoundCloud
+ - [ ] Stripe
+ - [ ] Vimeo
+ - [ ] Yahoo
+ - [ ] YouTube
+
+## OAuth v1
+
+ - [ ] Twitter
+ - [ ] Bitbucket
+ - [ ] Trello
+ - [ ] Tumblr
 
 ## Contribution
 
