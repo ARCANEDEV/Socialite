@@ -46,7 +46,7 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageAliases($app)
     {
         return [
-            //
+            'Socialite' => \Arcanedev\Socialite\Facades\Socialite::class,
         ];
     }
 }
