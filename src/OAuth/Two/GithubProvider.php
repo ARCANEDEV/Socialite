@@ -1,6 +1,7 @@
 <?php namespace Arcanedev\Socialite\OAuth\Two;
 
-use Arcanedev\Socialite\Base\OAuthTwoProvider;
+use Exception;
+use Illuminate\Support\Arr;
 
 /**
  * Class     GithubProvider
@@ -8,7 +9,7 @@ use Arcanedev\Socialite\Base\OAuthTwoProvider;
  * @package  Arcanedev\Socialite\OAuth\Two
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class GithubProvider extends OAuthTwoProvider
+class GithubProvider extends AbstractProvider
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -68,14 +69,12 @@ class GithubProvider extends OAuthTwoProvider
      */
     protected function getEmailByToken($token)
     {
-        $emailsUrl = 'https://api.github.com/user/emails?access_token='.$token;
+        $emailsUrl = "https://api.github.com/user/emails?access_token={$token}";
 
         try {
-            $response = $this->getHttpClient()->get(
-                $emailsUrl, $this->getRequestOptions()
-            );
+            $response = $this->getHttpClient()->get($emailsUrl, $this->getRequestOptions());
         }
-        catch (\Exception $e) {
+        catch (Exception $e) {
             return null;
         }
 
@@ -96,8 +95,8 @@ class GithubProvider extends OAuthTwoProvider
         return (new User)->setRaw($user)->map([
             'id'       => $user['id'],
             'nickname' => $user['login'],
-            'name'     => array_get($user, 'name'),
-            'email'    => array_get($user, 'email'),
+            'name'     => Arr::get($user, 'name'),
+            'email'    => Arr::get($user, 'email'),
             'avatar'   => $user['avatar_url'],
         ]);
     }

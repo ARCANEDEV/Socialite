@@ -49,7 +49,7 @@ class SocialiteManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Arcanedev\Socialite\Base\OAuthOneProvider
+     * @return \Arcanedev\Socialite\OAuth\One\AbstractProvider
      */
     protected function createTwitterDriver()
     {
@@ -64,7 +64,7 @@ class SocialiteManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Arcanedev\Socialite\Base\OAuthOneProvider
+     * @return \Arcanedev\Socialite\OAuth\One\AbstractProvider
      */
     protected function createBitbucketDriver()
     {
@@ -76,6 +76,22 @@ class SocialiteManager extends Manager implements Contracts\Factory
         );
     }
 
+    /**
+     * Format the server configuration.
+     *
+     * @param  array  $config
+     *
+     * @return array
+     */
+    protected function formatConfig(array $config)
+    {
+        return array_merge([
+            'identifier'   => $config['client_id'],
+            'secret'       => $config['client_secret'],
+            'callback_uri' => $config['redirect'],
+        ], $config);
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  OAuth V2 Drivers
      | ------------------------------------------------------------------------------------------------
@@ -83,7 +99,7 @@ class SocialiteManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Arcanedev\Socialite\Base\OAuthTwoProvider
+     * @return \Arcanedev\Socialite\OAuth\Two\AbstractProvider
      */
     protected function createGithubDriver()
     {
@@ -96,7 +112,7 @@ class SocialiteManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Arcanedev\Socialite\Base\OAuthTwoProvider
+     * @return \Arcanedev\Socialite\OAuth\Two\AbstractProvider
      */
     protected function createFacebookDriver()
     {
@@ -108,7 +124,7 @@ class SocialiteManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Arcanedev\Socialite\Base\OAuthTwoProvider
+     * @return \Arcanedev\Socialite\OAuth\Two\AbstractProvider
      */
     protected function createGoogleDriver()
     {
@@ -120,7 +136,7 @@ class SocialiteManager extends Manager implements Contracts\Factory
     /**
      * Create an instance of the specified driver.
      *
-     * @return \Arcanedev\Socialite\Base\OAuthTwoProvider
+     * @return \Arcanedev\Socialite\OAuth\Two\AbstractProvider
      */
     protected function createLinkedinDriver()
     {
@@ -136,9 +152,9 @@ class SocialiteManager extends Manager implements Contracts\Factory
      * @param  string  $provider
      * @param  array   $config
      *
-     * @return \Arcanedev\Socialite\Base\OAuthTwoProvider
+     * @return \Arcanedev\Socialite\OAuth\Two\AbstractProvider
      */
-    public function buildProvider($provider, $config)
+    protected function buildProvider($provider, $config)
     {
         return new $provider(
             $this->app['request'],
@@ -160,21 +176,5 @@ class SocialiteManager extends Manager implements Contracts\Factory
     protected function config()
     {
         return $this->app['config'];
-    }
-
-    /**
-     * Format the server configuration.
-     *
-     * @param  array  $config
-     *
-     * @return array
-     */
-    protected function formatConfig(array $config)
-    {
-        return array_merge([
-            'identifier'   => $config['client_id'],
-            'secret'       => $config['client_secret'],
-            'callback_uri' => $config['redirect'],
-        ], $config);
     }
 }
