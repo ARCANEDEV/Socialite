@@ -1,6 +1,5 @@
 <?php namespace Arcanedev\Socialite\OAuth\One;
 
-use Arcanedev\Socialite\Base\OAuthOneProvider;
 use InvalidArgumentException;
 
 /**
@@ -9,7 +8,7 @@ use InvalidArgumentException;
  * @package  Arcanedev\Socialite\OAuth\One
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class TwitterProvider extends OAuthOneProvider
+class TwitterProvider extends AbstractProvider
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions

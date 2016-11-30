@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Socialite\Tests\Stubs;
 
-use Arcanedev\Socialite\Base\OAuthOneProvider;
+use Arcanedev\Socialite\OAuth\One\AbstractProvider;
 
 /**
  * Class     OAuthOneProviderStub
@@ -8,7 +8,7 @@ use Arcanedev\Socialite\Base\OAuthOneProvider;
  * @package  Arcanedev\Socialite\Tests\Stubs
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class OAuthOneProviderStub extends OAuthOneProvider
+class OAuthOneProviderStub extends AbstractProvider
 {
     //
 }

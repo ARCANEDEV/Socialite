@@ -1,7 +1,6 @@
 <?php namespace Arcanedev\Socialite\OAuth\Two;
 
-use Arcanedev\Socialite\Base\OAuthTwoProvider;
-use GuzzleHttp\ClientInterface;
+use Illuminate\Support\Arr;
 
 /**
  * Class     GoogleProvider
@@ -9,7 +8,7 @@ use GuzzleHttp\ClientInterface;
  * @package  Arcanedev\Socialite\OAuth\Two
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class GoogleProvider extends OAuthTwoProvider
+class GoogleProvider extends AbstractProvider
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
@@ -50,33 +49,14 @@ class GoogleProvider extends OAuthTwoProvider
     }
 
     /**
-     * Get the access token for the given code.
-     *
-     * @param  string  $code
-     *
-     * @return string
-     */
-    public function getAccessToken($code)
-    {
-        $postKey = (version_compare(ClientInterface::VERSION, '6') === 1) ? 'form_params' : 'body';
-
-        $response = $this->getHttpClient()->post($this->getTokenUrl(), [
-            $postKey => $this->getTokenFields($code),
-        ]);
-
-        return $this->parseAccessToken($response->getBody());
-    }
-
-    /**
      * Get the POST fields for the token request.
      *
      * @param  string  $code
-     *
      * @return array
      */
     protected function getTokenFields($code)
     {
-        return array_add(
+        return Arr::add(
             parent::getTokenFields($code), 'grant_type', 'authorization_code'
         );
     }
@@ -105,11 +85,12 @@ class GoogleProvider extends OAuthTwoProvider
     protected function mapUserToObject(array $user)
     {
         return (new User)->setRaw($user)->map([
-            'id'       => $user['id'],
-            'nickname' => array_get($user, 'nickname'),
-            'name'     => $user['displayName'],
-            'email'    => $user['emails'][0]['value'],
-            'avatar'   => array_get($user, 'image')['url'],
+            'id'              => $user['id'],
+            'nickname'        => Arr::get($user, 'nickname'),
+            'name'            => $user['displayName'],
+            'email'           => $user['emails'][0]['value'],
+            'avatar'          => Arr::get($user, 'image')['url'],
+            'avatar_original' => preg_replace('/\?sz=([0-9]+)/', '', Arr::get($user, 'image')['url']),
         ]);
     }
 }

@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Socialite\Tests\Stubs;
 
-use Arcanedev\Socialite\Base\OAuthTwoProvider;
+use Arcanedev\Socialite\OAuth\Two\AbstractProvider;
 use Arcanedev\Socialite\OAuth\Two\User;
 
 /**
@@ -9,7 +9,7 @@ use Arcanedev\Socialite\OAuth\Two\User;
  * @package  Arcanedev\Socialite\Tests\Stubs
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class OAuthTwoProviderStub extends OAuthTwoProvider
+class OAuthTwoProviderStub extends AbstractProvider
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties

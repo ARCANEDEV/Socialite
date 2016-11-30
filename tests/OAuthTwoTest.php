@@ -1,6 +1,8 @@
 <?php namespace Arcanedev\Socialite\Tests;
 
+use Arcanedev\Socialite\Tests\Stubs\FacebookTestProviderStub;
 use Arcanedev\Socialite\Tests\Stubs\OAuthTwoProviderStub;
+use GuzzleHttp\ClientInterface;
 use Illuminate\Http\Request;
 use Mockery as m;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -22,37 +24,59 @@ class OAuthTwoTest extends TestCase
     public function it_can_generates_the_proper_symfony_redirect_response()
     {
         $request = Request::create('foo');
-        $request->setSession($session = m::mock(SessionInterface::class));
+        $request->setSession($session = m::mock(\Symfony\Component\HttpFoundation\Session\SessionInterface::class));
         $session->shouldReceive('set')->once();
 
         $provider = new OAuthTwoProviderStub($request, 'client_id', 'client_secret', 'redirect');
         $response = $provider->redirect();
 
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $response);
-        $this->assertEquals('http://auth.url', $response->getTargetUrl());
+        $this->assertInstanceOf(\Symfony\Component\HttpFoundation\RedirectResponse::class, $response);
+        $this->assertSame('http://auth.url', $response->getTargetUrl());
     }
 
     /** @test */
     public function it_returns_a_user_instance_for_the_authenticated_request()
     {
-        $request = Request::create('foo', 'GET', [
-            'state' => str_repeat('A', 40), 'code' => 'code'
-        ]);
-
-        $request->setSession($session = m::mock(SessionInterface::class));
+        $request = Request::create('foo', 'GET', ['state' => str_repeat('A', 40), 'code' => 'code']);
+        $request->setSession($session = m::mock(\Symfony\Component\HttpFoundation\Session\SessionInterface::class));
         $session->shouldReceive('pull')->once()->with('state')->andReturn(str_repeat('A', 40));
 
-        $provider       = new OAuthTwoProviderStub($request, 'client_id', 'client_secret', 'redirect_uri');
+        $provider = new OAuthTwoProviderStub($request, 'client_id', 'client_secret', 'redirect_uri');
         $provider->http = m::mock('StdClass');
+        $postKey = (version_compare(ClientInterface::VERSION, '6') === 1) ? 'form_params' : 'body';
         $provider->http->shouldReceive('post')->once()->with('http://token.url', [
-            'headers' => ['Accept' => 'application/json'], 'form_params' => ['client_id' => 'client_id', 'client_secret' => 'client_secret', 'code' => 'code', 'redirect_uri' => 'redirect_uri'],
+            'headers' => ['Accept' => 'application/json'],
+            $postKey  => ['client_id' => 'client_id', 'client_secret' => 'client_secret', 'code' => 'code', 'redirect_uri' => 'redirect_uri'],
         ])->andReturn($response = m::mock('StdClass'));
+        $response->shouldReceive('getBody')->once()->andReturn('{ "access_token" : "access_token", "refresh_token" : "refresh_token", "expires_in" : 3600 }');
 
-        $response->shouldReceive('getBody')->once()->andReturn('access_token=access_token');
-        $user = $provider->user();
+        $this->assertInstanceOf(\Arcanedev\Socialite\OAuth\Two\User::class, $user = $provider->user());
+        $this->assertSame('foo', $user->id);
+        $this->assertSame('access_token', $user->token);
+        $this->assertSame('refresh_token', $user->refreshToken);
+        $this->assertSame(3600, $user->expiresIn);
+    }
 
-        $this->assertInstanceOf(\Arcanedev\Socialite\OAuth\Two\User::class, $user);
-        $this->assertEquals('foo', $user->id);
+    /** @test */
+    public function it_returns_a_user_instance_for_the_authenticated_facebook_request()
+    {
+        $request = Request::create('foo', 'GET', ['state' => str_repeat('A', 40), 'code' => 'code']);
+        $request->setSession($session = m::mock(\Symfony\Component\HttpFoundation\Session\SessionInterface::class));
+        $session->shouldReceive('pull')->once()->with('state')->andReturn(str_repeat('A', 40));
+
+        $provider = new FacebookTestProviderStub($request, 'client_id', 'client_secret', 'redirect_uri');
+        $provider->http = m::mock('StdClass');
+        $postKey = (version_compare(ClientInterface::VERSION, '6') === 1) ? 'form_params' : 'body';
+        $provider->http->shouldReceive('post')->once()->with('https://graph.facebook.com/oauth/access_token', [
+            $postKey => ['client_id' => 'client_id', 'client_secret' => 'client_secret', 'code' => 'code', 'redirect_uri' => 'redirect_uri'],
+        ])->andReturn($response = m::mock('StdClass'));
+        $response->shouldReceive('getBody')->once()->andReturn('access_token=access_token&expires=5183085');
+
+        $this->assertInstanceOf(\Arcanedev\Socialite\OAuth\Two\User::class, $user = $provider->user());
+        $this->assertSame('foo', $user->id);
+        $this->assertSame('access_token', $user->token);
+        $this->assertNull($user->refreshToken);
+        $this->assertEquals(5183085, $user->expiresIn);
     }
 
     /**
@@ -69,7 +93,7 @@ class OAuthTwoTest extends TestCase
         $session->shouldReceive('pull')->once()->with('state')->andReturn(str_repeat('A', 40));
 
         $provider = new OAuthTwoProviderStub($request, 'client_id', 'client_secret', 'redirect');
-        $user     = $provider->user();
+        $provider->user();
     }
 
     /**
@@ -84,6 +108,6 @@ class OAuthTwoTest extends TestCase
         $session->shouldReceive('pull')->once()->with('state');
 
         $provider = new OAuthTwoProviderStub($request, 'client_id', 'client_secret', 'redirect');
-        $user     = $provider->user();
+        $provider->user();
     }
 }

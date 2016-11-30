@@ -1,6 +1,6 @@
 <?php namespace Arcanedev\Socialite\OAuth\One;
 
-use Arcanedev\Socialite\Base\AbstractUser;
+use Arcanedev\Socialite\OAuth\AbstractUser;
 
 /**
  * Class     User
