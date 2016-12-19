@@ -15,13 +15,6 @@ class SocialiteServiceProvider extends ServiceProvider
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Vendor name.
-     *
-     * @var string
-     */
-    protected $vendor  = 'arcanedev';
-
-    /**
      * Package name.
      *
      * @var string
@@ -51,9 +44,7 @@ class SocialiteServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->singleton(\Arcanedev\Socialite\Contracts\Factory::class, function ($app) {
-            return new SocialiteManager($app);
-        });
+        $this->singleton(Contracts\Factory::class, SocialiteManager::class);
     }
 
     /**
@@ -64,7 +55,7 @@ class SocialiteServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            \Arcanedev\Socialite\Contracts\Factory::class,
+            Contracts\Factory::class,
         ];
     }
 }
